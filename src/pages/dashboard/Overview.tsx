@@ -25,7 +25,7 @@ const dealData = [
 const recentActivity = [
   { type: 'contact', title: 'New contact created', user: 'Jane Smith', time: '30 mins ago' },
   { type: 'deal', title: 'Deal moved to Negotiation', user: 'John Carter', time: '2 hours ago' },
-  { type: 'meeting', title: 'Meeting scheduled with Acme Inc', user: 'Alex Johnson', time: '5 hours ago' },
+  { type: 'meeting', title: 'Meeting scheduled with HFB', user: 'Alex Johnson', time: '5 hours ago' },
   { type: 'task', title: 'Follow-up task completed', user: 'Sarah Williams', time: 'Yesterday' },
 ];
 

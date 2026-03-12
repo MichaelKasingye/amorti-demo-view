@@ -75,7 +75,7 @@ const MOCK_ACTIVITIES: DashboardActivity[] = [
   {
     id: 'act_3',
     type: 'meeting',
-    title: 'Meeting scheduled with Acme Inc',
+    title: 'Meeting scheduled with HFB',
     user: 'Alex Johnson',
     time: '5 hours ago',
     createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()

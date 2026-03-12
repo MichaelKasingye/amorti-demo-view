@@ -70,7 +70,7 @@ const contacts: Contact[] = [
     name: "Alex Johnson",
     email: "alex@example.com",
     phone: "+1 (555) 123-4567",
-    company: "Acme Inc",
+    company: "HFB",
     status: "active",
     lastContact: "2023-05-15",
   },
@@ -262,7 +262,7 @@ const Contacts = () => {
                 <Label htmlFor="company">Company</Label>
                 <Input
                   id="company"
-                  placeholder="Acme Inc"
+                  placeholder="HFB"
                   value={newContact.company}
                   onChange={(e) =>
                     setNewContact({ ...newContact, company: e.target.value })

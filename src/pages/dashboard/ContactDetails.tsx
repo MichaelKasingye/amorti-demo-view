@@ -22,7 +22,7 @@ const contacts: Contact[] = [
     name: "Alex Johnson",
     email: "alex@example.com",
     phone: "+1 (555) 123-4567",
-    company: "Acme Inc",
+    company: "HFB",
     status: "active",
     lastContact: "2023-05-15",
   },

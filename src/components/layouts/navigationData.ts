@@ -39,6 +39,6 @@ export const settingsNavItems: NavItem[] = [
 ];
 
 export const organizations: Organization[] = [
-  { id: 1, name: "Acme Inc", logo: "" },
+  { id: 1, name: "HFB", logo: "" },
   { id: 2, name: "Globex Corp", logo: "" },
 ];

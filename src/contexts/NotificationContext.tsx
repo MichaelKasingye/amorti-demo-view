@@ -46,7 +46,7 @@ const sampleNotifications: Notification[] = [
   {
     id: '2',
     title: 'Deal Stage Updated',
-    body: 'The deal with Acme Inc has moved to the negotiation stage. Follow up required.',
+    body: 'The deal with HFB has moved to the negotiation stage. Follow up required.',
     type: 'info',
     isRead: false,
     createdAt: new Date('2024-06-14T09:15:00'),

@@ -171,7 +171,7 @@ const OrganizationCreate = () => {
                     <Label htmlFor="orgName">Organization Name *</Label>
                     <Input 
                       id="orgName" 
-                      placeholder="Acme Inc." 
+                      placeholder="HFB." 
                       value={orgData.name}
                       onChange={(e) => updateField('name', e.target.value)}
                       required

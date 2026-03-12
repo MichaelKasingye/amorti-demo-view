@@ -9,7 +9,7 @@ import { PlusCircle } from "lucide-react";
 const organizations = [
   { 
     id: 1, 
-    name: "Acme Inc", 
+    name: "HFB", 
     role: "Admin", 
     members: 8,
     description: "Global technology solutions provider"
