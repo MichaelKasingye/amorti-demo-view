@@ -15,10 +15,10 @@ const LandingPage = () => {
       
       <main className="flex-1">
         <HeroSection />
-        <BenefitsSection />
-        <FeaturesSection />
-        <SolutionsSection />
-        <CTASection />
+        {/* <BenefitsSection /> */}
+        {/* <FeaturesSection /> */}
+        {/* <SolutionsSection /> */}
+        {/* <CTASection /> */}
       </main>
       
       <LandingFooter />

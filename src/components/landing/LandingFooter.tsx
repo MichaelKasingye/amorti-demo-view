@@ -5,7 +5,7 @@ export const LandingFooter = () => {
   return (
     <footer className="bg-background py-12">
       <div className="container px-4 sm:px-6 md:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <h3 className="font-semibold mb-4">Product</h3>
             <ul className="space-y-2">
@@ -38,7 +38,7 @@ export const LandingFooter = () => {
               <li><Link to="#" className="text-muted-foreground hover:text-foreground">Privacy</Link></li>
             </ul>
           </div>
-        </div>
+        </div> */}
         <div className="mt-12 border-t pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 rounded-full bg-primary"></div>

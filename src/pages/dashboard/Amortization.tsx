@@ -25,18 +25,18 @@ interface Currency {
 
 const currencies: Currency[] = [
   { code: 'USD', symbol: '$', name: 'US Dollar' },
-  { code: 'EUR', symbol: '€', name: 'Euro' },
-  { code: 'GBP', symbol: '£', name: 'British Pound' },
-  { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
-  { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
-  { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
-  { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc' },
-  { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
-  { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
-  { code: 'BRL', symbol: 'R$', name: 'Brazilian Real' },
-  { code: 'UGX', symbol: 'USh', name: 'Ugandan Shilling' },
-  { code: 'KES', symbol: 'KSh', name: 'Kenyan Shilling' },
-  { code: 'TZS', symbol: 'TSh', name: 'Tanzanian Shilling' },
+  // { code: 'EUR', symbol: '€', name: 'Euro' },
+  // { code: 'GBP', symbol: '£', name: 'British Pound' },
+  // { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+  // { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
+  // { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+  // { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc' },
+  // { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+  // { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
+  // { code: 'BRL', symbol: 'R$', name: 'Brazilian Real' },
+  // { code: 'UGX', symbol: 'USh', name: 'Ugandan Shilling' },
+  // { code: 'KES', symbol: 'KSh', name: 'Kenyan Shilling' },
+  // { code: 'TZS', symbol: 'TSh', name: 'Tanzanian Shilling' },
 ];
 
 export default function Amortization() {
@@ -391,7 +391,7 @@ export default function Amortization() {
       </div>
 
       {/* Detailed Analysis Section */}
-      {result && (
+      {/* {result && (
         <div className="space-y-6">
           <Tabs defaultValue="charts" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
@@ -420,7 +420,7 @@ export default function Amortization() {
             </TabsContent>
           </Tabs>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

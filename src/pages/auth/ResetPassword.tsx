@@ -57,7 +57,7 @@ const ResetPassword = () => {
       
       <Link to="/" className="mb-8 flex items-center gap-2 text-xl font-bold text-primary">
         <div className="h-8 w-8 rounded-full bg-primary"></div>
-        Rafiki Fanaka System
+        RaFa
       </Link>
       
       <div className="auth-card">

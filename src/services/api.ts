@@ -86,7 +86,7 @@ class ApiService {
     await simulateDelay();
     
     // Simulate authentication logic
-    if (credentials.email === "demo@example.com" && credentials.password === "password") {
+    if (credentials.email === "demo@housingfinancebank.com" && credentials.password === "password") {
       const user = DUMMY_USERS.find(u => u.email === credentials.email)!;
       return {
         data: {

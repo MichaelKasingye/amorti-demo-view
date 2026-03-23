@@ -46,7 +46,7 @@ const Login = () => {
       
       <Link to="/" className="mb-8 flex items-center gap-2 text-xl font-bold text-primary">
         <div className="h-8 w-8 rounded-full bg-primary"></div>
-        Rafiki Fanaka System
+        RaFa
       </Link>
       
       <div className="auth-card">
@@ -54,7 +54,7 @@ const Login = () => {
           <h1 className="text-2xl font-bold">Welcome back</h1>
           <p className="text-muted-foreground mt-2">Login to your account</p>
           <p className="text-sm text-muted-foreground mt-1">
-            Demo: demo@example.com / password
+            Demo: demo@housingfinancebank.com / password
           </p>
         </div>
         
@@ -73,12 +73,12 @@ const Login = () => {
           </div>
           
           <div className="space-y-2">
-            <div className="flex justify-between items-center">
+            {/* <div className="flex justify-between items-center">
               <Label htmlFor="password">Password</Label>
               <Link to="/forgot-password" className="text-sm text-primary hover:underline">
                 Forgot password?
               </Link>
-            </div>
+            </div> */}
             <Input 
               id="password" 
               type="password"
@@ -88,7 +88,7 @@ const Login = () => {
               required 
             />
           </div>
-          
+{/*           
           <div className="flex items-center space-x-2">
             <Checkbox 
               id="remember" 
@@ -97,7 +97,7 @@ const Login = () => {
               disabled={loginMutation.isPending}
             />
             <Label htmlFor="remember" className="text-sm font-normal">Remember me</Label>
-          </div>
+          </div> */}
           
           <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
             {loginMutation.isPending ? "Signing in..." : "Sign in"}
@@ -107,12 +107,12 @@ const Login = () => {
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
+            {/* <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-            </div>
+            </div> */}
           </div>
           
-          <Button 
+          {/* <Button 
             variant="outline" 
             type="button" 
             className="w-full"
@@ -138,7 +138,7 @@ const Login = () => {
               />
             </svg>
             Google
-          </Button>
+          </Button> */}
         </form>
         
         <div className="mt-4 text-center text-sm">

@@ -18,7 +18,7 @@ const Policy = () => {
           </Link>
           <Link to="/" className="text-xl font-bold text-primary flex items-center gap-2">
             <div className="h-6 w-6 rounded-full bg-primary"></div>
-            Rafiki Fanaka System
+            Rafiki Fanaka System - RaFa
           </Link>
         </div>
       </header>

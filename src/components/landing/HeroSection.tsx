@@ -21,21 +21,21 @@ export const HeroSection = () => {
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <Link to="/signup" className="inline-flex">
+              {/* <Link to="/signup" className="inline-flex">
                 <Button size="lg" className="px-8">
                   Start Free Trial
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
-              </Link>
-              <Link to="/login" className="inline-flex">
+              </Link> */}
+              {/* <Link to="/login" className="inline-flex">
                 <Button size="lg" variant="outline">
                   Watch Demo
                 </Button>
-              </Link>
+              </Link> */}
             </div>
-            <p className="text-sm text-muted-foreground">
+            {/* <p className="text-sm text-muted-foreground">
               No credit card required • 14-day free trial
-            </p>
+            </p> */}
           </div>
           <div className="mx-auto aspect-video overflow-hidden rounded-xl border bg-slate-50 object-cover dark:bg-slate-900 lg:order-last">
             <div className="h-full w-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
