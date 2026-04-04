@@ -21,14 +21,14 @@ const sampleProducts: Product[] = [
   },
   {
     id: "p2", 
-    name: "auto loan",
-    description: "Vehicle financing solution",
+    name: "personal secured loan",
+    description: "Secured personal lending",
     valuePercentage: 15,
     createdAt: "2023-05-20T14:15:00Z"
   },
   {
     id: "p3",
-    name: "personal loan",
+    name: "personal unsecured loan",
     description: "Unsecured personal lending",
     valuePercentage: 25,
     createdAt: "2023-05-25T09:00:00Z"
