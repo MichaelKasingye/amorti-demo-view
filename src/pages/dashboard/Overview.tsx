@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, Users, Contact, DollarSign, TrendingUp, TrendingDown, Calendar, CheckCircle2, Clock } from "lucide-react";
+import { BarChart3, Users, Contact, DollarSign, TrendingUp, TrendingDown, Calendar, CheckCircle2, Clock, Wallet } from "lucide-react";
 import { AreaChart, Area, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TimePeriodSelector, TimePeriod, DateRange } from "@/components/dashboard/TimePeriodSelector";
 import { useTimePeriodData, useTimePeriodStats } from "@/hooks/useTimePeriodData";
@@ -25,7 +25,7 @@ const dealData = [
 const recentActivity = [
   { type: 'contact', title: 'New contact created', user: 'Jane Smith', time: '30 mins ago' },
   { type: 'deal', title: 'Deal moved to Negotiation', user: 'John Carter', time: '2 hours ago' },
-  { type: 'meeting', title: 'Meeting scheduled with HFB', user: 'Alex Johnson', time: '5 hours ago' },
+  { type: 'meeting', title: 'Meeting scheduled with Acme Inc', user: 'Alex Johnson', time: '5 hours ago' },
   { type: 'task', title: 'Follow-up task completed', user: 'Sarah Williams', time: 'Yesterday' },
 ];
 
@@ -43,7 +43,7 @@ const Overview = () => {
     }
   };
 
-  const formatCurrency = (value: number) => `$${(value / 1000).toFixed(1)}k`;
+  const formatCurrency = (value: number) => `UGX:${(value / 1000).toFixed(1)}k`;
 
   return (
     <div className="space-y-8">
@@ -106,7 +106,7 @@ const Overview = () => {
                 </p>
               </div>
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-primary" />
+                <Wallet className="h-6 w-6 text-primary" />
               </div>
             </div>
           </CardContent>
@@ -227,7 +227,7 @@ const Overview = () => {
                   )}
                   {activity.type === 'deal' && (
                     <div className="h-9 w-9 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
-                      <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      {/* <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" /> */}UGX
                     </div>
                   )}
                   {activity.type === 'meeting' && (

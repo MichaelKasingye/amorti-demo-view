@@ -50,7 +50,7 @@ export function DashboardHeader({ currentOrg, onMenuClick }: DashboardHeaderProp
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>John Doe</DropdownMenuLabel>
-              <DropdownMenuLabel className="font-normal text-xs text-muted-foreground">john.doe@example.com</DropdownMenuLabel>
+              <DropdownMenuLabel className="font-normal text-xs text-muted-foreground">john.doe@housingfinancebank.com</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link to="/dashboard/profile">Profile</Link>

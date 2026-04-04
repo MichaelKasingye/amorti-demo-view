@@ -16,9 +16,9 @@ const mockTeamMembers: TeamMember[] = [
     id: "tm1",
     firstName: "Sarah",
     lastName: "Williams",
-    email: "sarah@example.com",
+    email: "sarah@housingfinancebank.com",
     role: "Admin",
-    department: "Sales",
+    department: "Distribution and Alternative Channels",
     status: "active",
     joinedAt: "2023-05-15T10:30:00Z",
   },
@@ -26,9 +26,9 @@ const mockTeamMembers: TeamMember[] = [
     id: "tm2",
     firstName: "Michael",
     lastName: "Brown",
-    email: "michael@example.com",
-    role: "Manager",
-    department: "Marketing",
+    email: "michael@housingfinancebank.com",
+    role: "sales representative",
+    department: "Mortgage and Consumer banking",
     status: "active",
     joinedAt: "2023-04-20T14:15:00Z",
   },
@@ -36,9 +36,9 @@ const mockTeamMembers: TeamMember[] = [
     id: "tm3",
     firstName: "Emily",
     lastName: "Davis",
-    email: "emily@example.com",
+    email: "emily@housingfinancebank.com",
     role: "Sales Representative",
-    department: "Sales",
+    department: "Distribution and Alternative Channels",
     status: "active",
     joinedAt: "2023-03-10T09:45:00Z",
   },
@@ -46,18 +46,18 @@ const mockTeamMembers: TeamMember[] = [
     id: "tm4",
     firstName: "Daniel",
     lastName: "Wilson",
-    email: "daniel@example.com",
+    email: "daniel@housingfinancebank.com",
     role: "Support Agent",
-    department: "Support",
+    department: "Distribution and Alternative Channels",
     status: "invited",
   },
   {
     id: "tm5",
     firstName: "Olivia",
     lastName: "Martinez",
-    email: "olivia@example.com",
+    email: "olivia@housingfinancebank.com",
     role: "Marketing Specialist",
-    department: "Marketing",
+    department: "Distribution and Alternative Channels",
     status: "active",
     joinedAt: "2023-02-28T16:20:00Z",
   },
@@ -148,14 +148,14 @@ const Teams = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={handleGenerateInviteLink} variant="outline" className="shrink-0">
+          {/* <Button onClick={handleGenerateInviteLink} variant="outline" className="shrink-0">
             <Link className="mr-2 h-4 w-4" />
             Generate Invite Link
-          </Button>
-          <Button onClick={() => setIsInviteDialogOpen(true)} className="shrink-0">
+          </Button> */}
+          {/* <Button onClick={() => setIsInviteDialogOpen(true)} className="shrink-0">
             <Plus className="mr-2 h-4 w-4" />
             Invite Team
-          </Button>
+          </Button> */}
         </div>
       </div>
 

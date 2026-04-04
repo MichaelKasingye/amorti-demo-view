@@ -137,7 +137,7 @@ const Deals = () => {
         Total Deal Value: <span className="text-primary">{totalAmount.toLocaleString()} {filteredDeals[0]?.currency || 'UGX'}</span>
       </div>
 
-      {viewMode === "kanban" ? (
+      {/* {viewMode === "kanban" ? (
         <DealsKanbanView 
           stageGroups={stageGroups} 
           onMoveDeal={moveDeal}
@@ -151,8 +151,14 @@ const Deals = () => {
           onChangeStage={handleChangeStage}
           onAddNote={handleAddNote}
         />
-      )}
-
+      )} */}
+<DealsTableView 
+          deals={filteredDeals} 
+          onMoveDeal={moveDeal}
+          onEditDeal={handleEditDeal}
+          onChangeStage={handleChangeStage}
+          onAddNote={handleAddNote}
+        />
       <EditDealDialog
         deal={selectedDeal}
         open={isEditDialogOpen}

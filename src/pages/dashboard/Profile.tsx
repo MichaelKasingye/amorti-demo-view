@@ -14,7 +14,7 @@ const Profile = () => {
     id: "1",
     firstName: "John",
     lastName: "Doe",
-    email: "john.doe@example.com",
+    email: "john.doe@housingfinancebank.com",
     phone: "+1 (555) 123-4567",
     position: "Senior Sales Manager",
     department: "Sales",

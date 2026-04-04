@@ -1,24 +1,24 @@
 
-import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Edit, Trash } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Plus, Search, Link } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Department } from "@/types/departments";
-import { TeamMember } from "@/types/teams";
 import { TeamsTable } from "@/components/teams/TeamsTable";
+import { InviteTeamDialog } from "@/components/teams/InviteTeamDialog";
+import { InviteLinkModal } from "@/components/teams/InviteLinkModal";
+import { TeamMember, InviteTeamMemberData } from "@/types/teams";
 
-// Mock team members data - in a real app this would come from your backend
+// Mock data - in a real app this would come from your backend
 const mockTeamMembers: TeamMember[] = [
   {
     id: "tm1",
     firstName: "Sarah",
     lastName: "Williams",
-    email: "sarah@example.com",
+    email: "sarah@housingfinancebank.com",
     role: "Admin",
-    department: "Sales",
+    department: "Distribution and Alternative Channels",
     status: "active",
     joinedAt: "2023-05-15T10:30:00Z",
   },
@@ -26,9 +26,9 @@ const mockTeamMembers: TeamMember[] = [
     id: "tm2",
     firstName: "Michael",
     lastName: "Brown",
-    email: "michael@example.com",
-    role: "Manager",
-    department: "Marketing",
+    email: "michael@housingfinancebank.com",
+    role: "sales representative",
+    department: "Mortgage and Consumer banking",
     status: "active",
     joinedAt: "2023-04-20T14:15:00Z",
   },
@@ -36,9 +36,9 @@ const mockTeamMembers: TeamMember[] = [
     id: "tm3",
     firstName: "Emily",
     lastName: "Davis",
-    email: "emily@example.com",
+    email: "emily@housingfinancebank.com",
     role: "Sales Representative",
-    department: "Sales",
+    department: "Distribution and Alternative Channels",
     status: "active",
     joinedAt: "2023-03-10T09:45:00Z",
   },
@@ -46,60 +46,50 @@ const mockTeamMembers: TeamMember[] = [
     id: "tm4",
     firstName: "Daniel",
     lastName: "Wilson",
-    email: "daniel@example.com",
+    email: "daniel@housingfinancebank.com",
     role: "Support Agent",
-    department: "Support",
+    department: "Distribution and Alternative Channels",
     status: "invited",
   },
   {
     id: "tm5",
     firstName: "Olivia",
     lastName: "Martinez",
-    email: "olivia@example.com",
+    email: "olivia@housingfinancebank.com",
     role: "Marketing Specialist",
-    department: "Marketing",
+    department: "Distribution and Alternative Channels",
     status: "active",
     joinedAt: "2023-02-28T16:20:00Z",
   },
 ];
 
-const DepartmentDetails = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+const Teams = () => {
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(mockTeamMembers);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
+  const [isInviteLinkModalOpen, setIsInviteLinkModalOpen] = useState(false);
+  const [generatedInviteLink, setGeneratedInviteLink] = useState("");
   const { toast } = useToast();
-  const [department, setDepartment] = useState<Department | null>(null);
-  const [departmentMembers, setDepartmentMembers] = useState<TeamMember[]>([]);
 
-  useEffect(() => {
-    // In a real app, you would fetch the department data from an API
-    // For now, we'll create a mock department
-    if (id) {
-      const mockDepartment: Department = {
-        id,
-        name: "Sample Department",
-        description: "This is a sample department for demonstration purposes.",
-        departmentCode: "DEPT001",
-        isBranch: true,
-        createdAt: new Date().toISOString()
-      };
-      setDepartment(mockDepartment);
-
-      // Filter team members by department name
-      const filteredMembers = mockTeamMembers.filter(
-        member => member.department.toLowerCase() === mockDepartment.name.toLowerCase()
-      );
-      setDepartmentMembers(filteredMembers);
-    }
-  }, [id]);
+  const filteredMembers = teamMembers.filter((member) => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      member.firstName.toLowerCase().includes(searchLower) ||
+      member.lastName.toLowerCase().includes(searchLower) ||
+      member.email.toLowerCase().includes(searchLower) ||
+      member.department.toLowerCase().includes(searchLower) ||
+      member.role.toLowerCase().includes(searchLower)
+    );
+  });
 
   const handleRoleChange = (memberId: string, newRole: string) => {
-    setDepartmentMembers((prev) =>
+    setTeamMembers((prev) =>
       prev.map((member) =>
         member.id === memberId ? { ...member, role: newRole } : member
       )
     );
     
-    const member = departmentMembers.find(m => m.id === memberId);
+    const member = teamMembers.find(m => m.id === memberId);
     if (member) {
       toast({
         title: "Role Updated",
@@ -108,111 +98,114 @@ const DepartmentDetails = () => {
     }
   };
 
-  const handleDelete = () => {
-    if (department && window.confirm(`Are you sure you want to delete "${department.name}"?`)) {
-      toast({
-        title: "Success",
-        description: "Department deleted successfully!"
-      });
-      navigate("/dashboard/departments");
-    }
+  const handleInviteTeamMember = (data: InviteTeamMemberData) => {
+    const newMember: TeamMember = {
+      id: `tm${Date.now()}`,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      role: data.role,
+      department: "General", // You might want to add department selection to the invite form
+      status: "invited",
+    };
+
+    setTeamMembers((prev) => [...prev, newMember]);
+    
+    toast({
+      title: "Invitation Sent",
+      description: `An invitation has been sent to ${data.firstName} ${data.lastName}`,
+    });
   };
 
-  if (!department) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={() => navigate("/dashboard/departments")}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Departments
-          </Button>
-        </div>
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Department not found</p>
-        </div>
-      </div>
-    );
-  }
+  const handleGenerateInviteLink = () => {
+    // Generate a dummy invite link - in real app this would come from backend
+    const dummyInviteLink = `https://yourapp.com/invite/${Math.random().toString(36).substring(2, 15)}`;
+    
+    setGeneratedInviteLink(dummyInviteLink);
+    setIsInviteLinkModalOpen(true);
+    
+    // Also copy to clipboard
+    navigator.clipboard.writeText(dummyInviteLink).then(() => {
+      toast({
+        title: "Invite Link Generated",
+        description: "The invite link has been copied to your clipboard.",
+      });
+    }).catch(() => {
+      toast({
+        title: "Invite Link Generated",
+        description: "Please copy the link from the modal.",
+      });
+    });
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={() => navigate("/dashboard/departments")}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Departments
-          </Button>
-          <h1 className="text-2xl sm:text-3xl font-bold">{department.name}</h1>
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold">Teams</h1>
+          <p className="text-muted-foreground">
+            Manage your team members and their roles
+          </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
-            <Edit className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
-          <Button variant="destructive" size="sm" onClick={handleDelete}>
-            <Trash className="h-4 w-4 mr-2" />
-            Delete
-          </Button>
+          {/* <Button onClick={handleGenerateInviteLink} variant="outline" className="shrink-0">
+            <Link className="mr-2 h-4 w-4" />
+            Generate Invite Link
+          </Button> */}
+          {/* <Button onClick={() => setIsInviteDialogOpen(true)} className="shrink-0">
+            <Plus className="mr-2 h-4 w-4" />
+            Invite Team
+          </Button> */}
         </div>
       </div>
 
-      <div className="grid gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Department Information</CardTitle>
-            <CardDescription>
-              Basic information about this department
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <h3 className="font-medium text-sm text-muted-foreground mb-1">Name</h3>
-                <p className="text-sm">{department.name}</p>
-              </div>
-              <div>
-                <h3 className="font-medium text-sm text-muted-foreground mb-1">Department Code</h3>
-                <code className="px-2 py-1 bg-muted rounded text-sm">
-                  {department.departmentCode}
-                </code>
-              </div>
-              <div>
-                <h3 className="font-medium text-sm text-muted-foreground mb-1">Type</h3>
-                <Badge variant={department.isBranch ? "default" : "secondary"}>
-                  {department.isBranch ? "Branch" : "Department"}
-                </Badge>
-              </div>
-              <div>
-                <h3 className="font-medium text-sm text-muted-foreground mb-1">Created</h3>
-                <p className="text-sm">{new Date(department.createdAt).toLocaleDateString()}</p>
-              </div>
-            </div>
-            {department.description && (
-              <div>
-                <h3 className="font-medium text-sm text-muted-foreground mb-1">Description</h3>
-                <p className="text-sm">{department.description}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Department Members</CardTitle>
-            <CardDescription>
-              Team members assigned to this department
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <TeamsTable 
-              members={departmentMembers} 
-              onRoleChange={handleRoleChange}
-            />
-          </CardContent>
-        </Card>
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        <div className="relative w-full">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search team members..."
+            className="w-full pl-8"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
       </div>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Team Members</CardTitle>
+          <CardDescription>
+            View and manage all team members across departments
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <TeamsTable 
+            members={filteredMembers} 
+            onRoleChange={handleRoleChange}
+          />
+        </CardContent>
+      </Card>
+
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          Showing <strong>{filteredMembers.length}</strong> of{" "}
+          <strong>{teamMembers.length}</strong> team members
+        </div>
+      </div>
+
+      <InviteTeamDialog
+        open={isInviteDialogOpen}
+        onOpenChange={setIsInviteDialogOpen}
+        onInvite={handleInviteTeamMember}
+      />
+
+      <InviteLinkModal
+        open={isInviteLinkModalOpen}
+        onOpenChange={setIsInviteLinkModalOpen}
+        inviteLink={generatedInviteLink}
+      />
     </div>
   );
 };
 
-export default DepartmentDetails;
+export default Teams;

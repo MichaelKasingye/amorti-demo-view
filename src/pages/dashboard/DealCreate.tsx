@@ -107,15 +107,14 @@ const DealCreate = () => {
 
   // Mock data - in real app, these would come from backend
   const departments = [
-    { id: "dept1", name: "Sales Department" },
-    { id: "dept2", name: "Marketing Department" },
-    { id: "dept3", name: "Operations Department" },
+      { id: "dept1", name: "Distribution and Alternative Channels" },
+    { id: "dept2", name: "Mortgage and Consumer banking" },
   ];
 
   const products = [
-    { id: "prod1", name: "Personal Loan" },
+     { id: "prod1", name: "Personal Secured Loan" },
+    { id: "prod1", name: "Personal Unsecured Loan" },
     { id: "prod2", name: "Business Loan" },
-    { id: "prod3", name: "Car Loan" },
     { id: "prod4", name: "Mortgage Loan" },
   ];
 

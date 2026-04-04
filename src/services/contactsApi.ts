@@ -25,7 +25,7 @@ const DUMMY_CONTACTS: Contact[] = [
     firstName: "John",
     lastName: "Doe",
     name: "John Doe",
-    email: "john.doe@example.com",
+    email: "john.doe@housingfinancebank.com",
     phoneNumber: "+1-555-123-4567",
     jobTitle: "Financial Manager",
     company: "ABC Corporation",
