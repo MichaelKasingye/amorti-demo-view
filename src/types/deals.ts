@@ -28,8 +28,11 @@ export interface DealNote {
   createdBy: string;
 }
 
+export type DealType = 'account' | 'loan';
+
 export interface Deal {
   id: string;
+  dealType: DealType;
   departmentId: string;
   productId: string;
   description: string;
@@ -47,6 +50,43 @@ export interface Deal {
   contact: Contact;
   notes?: DealNote[];
 }
+
+export const dealTypeLabels: Record<DealType, string> = {
+  account: 'Account',
+  loan: 'Loan'
+};
+
+export const dealTypeBadgeStyles: Record<DealType, string> = {
+  account: 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-300',
+  loan: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300'
+};
+
+export interface ProductOption {
+  id: string;
+  name: string;
+  dealType: DealType;
+}
+
+export const accountProductOptions: ProductOption[] = [
+  { id: 'acc-toto', name: 'Toto Account', dealType: 'account' },
+  { id: 'acc-student', name: 'Student Account', dealType: 'account' },
+  { id: 'acc-current', name: 'Current Account', dealType: 'account' },
+  { id: 'acc-savings', name: 'Savings Account', dealType: 'account' },
+  { id: 'acc-salary', name: 'Salary Account', dealType: 'account' },
+];
+
+export const loanProductOptions: ProductOption[] = [
+  { id: 'loan-personal-secured', name: 'Personal Secured Loan', dealType: 'loan' },
+  { id: 'loan-personal-unsecured', name: 'Personal Unsecured Loan', dealType: 'loan' },
+  { id: 'loan-business', name: 'Business Loan', dealType: 'loan' },
+  { id: 'loan-mortgage', name: 'Mortgage Loan', dealType: 'loan' },
+  { id: 'loan-salary', name: 'Salary Loan', dealType: 'loan' },
+];
+
+export const productOptionsByDealType: Record<DealType, ProductOption[]> = {
+  account: accountProductOptions,
+  loan: loanProductOptions,
+};
 
 export const stageLabels = {
   'discovery': 'Discovery',
@@ -67,8 +107,9 @@ export const stageBadgeStyles = {
 export const sampleDeals: Deal[] = [
   {
     id: 'd1',
+    dealType: 'loan',
     departmentId: 'dept1',
-    productId: 'prod1',
+    productId: 'loan-personal-secured',
     description: 'Enterprise software license for growing business needs',
     currency: 'UGX',
     loanAmount: 12500000,
@@ -113,8 +154,9 @@ export const sampleDeals: Deal[] = [
   },
   {
     id: 'd2',
+    dealType: 'loan',
     departmentId: 'dept2',
-    productId: 'prod2',
+    productId: 'loan-business',
     description: 'Consulting services for process optimization',
     currency: 'UGX',
     loanAmount: 8750000,
@@ -146,6 +188,45 @@ export const sampleDeals: Deal[] = [
       status: 'active',
       source: 'website',
       lastContactedAt: '2023-05-20T14:15:00Z'
+    },
+    notes: []
+  },
+  {
+    id: 'd3',
+    dealType: 'account',
+    departmentId: 'dept1',
+    productId: 'acc-current',
+    description: 'New current account for everyday banking needs',
+    currency: 'UGX',
+    loanAmount: 0,
+    loanTerm: 0,
+    salary: 0,
+    PTI: 0,
+    totalInterest: 0,
+    runningLoan: 0,
+    stage: 'closed-won',
+    expectedClosingDate: '2023-06-10',
+    closedAt: '2023-06-10',
+    source: 'website',
+    contact: {
+      contactID: 'contact3',
+      firstName: 'Bob',
+      lastName: 'Wilson',
+      name: 'Bob Wilson',
+      email: 'bob@example.com',
+      phoneNumber: '+256-700-345678',
+      jobTitle: 'Accountant',
+      employer: 'Self',
+      company: '',
+      industry: '',
+      address: '789 Market Rd',
+      city: 'Jinja',
+      state: 'Eastern',
+      zipCode: '00258',
+      country: 'Uganda',
+      status: 'active',
+      source: 'website',
+      lastContactedAt: '2023-06-05T09:00:00Z'
     },
     notes: []
   }

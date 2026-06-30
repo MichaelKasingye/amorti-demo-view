@@ -15,14 +15,18 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
-import { Deal } from "@/types/deals";
+import { Deal, DealType, productOptionsByDealType } from "@/types/deals";
 import { StageBadge } from "./StageBadge";
+import { DealTypeBadge } from "./DealTypeBadge";
 import { DealActionMenu } from "./DealActionMenu";
 import { exportTableData } from "@/utils/csvExport";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+type DealTypeTab = "all" | DealType;
 
 interface DealsTableViewProps {
   deals: Deal[];
@@ -31,20 +35,35 @@ interface DealsTableViewProps {
   onEditDeal?: (deal: Deal) => void;
   onChangeStage?: (deal: Deal) => void;
   onAddNote?: (deal: Deal) => void;
+  dealTypeTab: DealTypeTab;
+  onDealTypeTabChange: (tab: DealTypeTab) => void;
 }
 
-export const DealsTableView = ({ deals, onMoveDeal, onViewDeal, onEditDeal, onChangeStage, onAddNote }: DealsTableViewProps) => {
+const getProductName = (deal: Deal) =>
+  productOptionsByDealType[deal.dealType].find(product => product.id === deal.productId)?.name ?? deal.productId;
+
+export const DealsTableView = ({ deals, onMoveDeal, onViewDeal, onEditDeal, onChangeStage, onAddNote, dealTypeTab, onDealTypeTabChange }: DealsTableViewProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const itemsPerPage = 10;
-  
-  const totalPages = Math.ceil(deals.length / itemsPerPage);
+
+  const showLoanColumns = dealTypeTab !== "account";
+  const columnCount = showLoanColumns ? 8 : 6;
+
+  const visibleDeals = dealTypeTab === "all" ? deals : deals.filter(deal => deal.dealType === dealTypeTab);
+
+  const totalPages = Math.ceil(visibleDeals.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentDeals = deals.slice(startIndex, endIndex);
+  const currentDeals = visibleDeals.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleDealTypeTabChange = (value: string) => {
+    onDealTypeTabChange(value as DealTypeTab);
+    setCurrentPage(1);
   };
 
   const handleViewDeal = (deal: Deal) => {
@@ -63,12 +82,20 @@ export const DealsTableView = ({ deals, onMoveDeal, onViewDeal, onEditDeal, onCh
       'expectedClosingDate': 'Expected Closing Date'
     };
     
-    exportTableData(deals, 'deals-export', customHeaders);
+    exportTableData(visibleDeals, 'deals-export', customHeaders);
   };
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <Tabs value={dealTypeTab} onValueChange={handleDealTypeTabChange}>
+          <TabsList>
+            <TabsTrigger value="all">All Deals</TabsTrigger>
+            <TabsTrigger value="account">Accounts</TabsTrigger>
+            <TabsTrigger value="loan">Loans</TabsTrigger>
+          </TabsList>
+        </Tabs>
+
         <Button variant="outline" onClick={handleExportCSV} className="gap-2">
           <Download className="h-4 w-4" />
           Export CSV
@@ -81,16 +108,22 @@ export const DealsTableView = ({ deals, onMoveDeal, onViewDeal, onEditDeal, onCh
             <TableRow>
               <TableHead>Client Name</TableHead>
               <TableHead>Company</TableHead>
+              <TableHead>Type</TableHead>
+              <TableHead>Product</TableHead>
               <TableHead>Stage</TableHead>
-              <TableHead className="text-right">Loan Amount</TableHead>
-              <TableHead>Loan Duration (Months)</TableHead>
+              {showLoanColumns && (
+                <>
+                  <TableHead className="text-right">Loan Amount</TableHead>
+                  <TableHead>Loan Duration (Months)</TableHead>
+                </>
+              )}
               <TableHead className="w-[80px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {currentDeals.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
+                <TableCell colSpan={columnCount} className="h-24 text-center">
                   No deals found.
                 </TableCell>
               </TableRow>
@@ -100,10 +133,20 @@ export const DealsTableView = ({ deals, onMoveDeal, onViewDeal, onEditDeal, onCh
                   <TableCell className="font-medium">{deal.contact.name}</TableCell>
                   <TableCell>{deal.contact.company}</TableCell>
                   <TableCell>
+                    <DealTypeBadge dealType={deal.dealType} />
+                  </TableCell>
+                  <TableCell>{getProductName(deal)}</TableCell>
+                  <TableCell>
                     <StageBadge stage={deal.stage} />
                   </TableCell>
-                  <TableCell className="text-right">{deal.loanAmount.toLocaleString()} {deal.currency}</TableCell>
-                  <TableCell>{deal.loanTerm} months</TableCell>
+                  {showLoanColumns && (
+                    <>
+                      <TableCell className="text-right">
+                        {deal.dealType === 'loan' ? `${deal.loanAmount.toLocaleString()} ${deal.currency}` : '—'}
+                      </TableCell>
+                      <TableCell>{deal.dealType === 'loan' ? `${deal.loanTerm} months` : '—'}</TableCell>
+                    </>
+                  )}
                   <TableCell>
                     <DealActionMenu 
                       deal={deal} 

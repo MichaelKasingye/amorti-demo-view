@@ -18,14 +18,14 @@ const Departments = () => {
       isBranch: false,
       createdAt: "2024-01-15T10:00:00Z"
     },
-    {
-      id: "2", 
-      name: "Engineering",
-      description: "Software development and technical operations",
-      departmentCode: "ENG001",
-      isBranch: true,
-      createdAt: "2024-01-10T09:00:00Z"
-    },
+    // {
+    //   id: "2", 
+    //   name: "Engineering",
+    //   description: "Software development and technical operations",
+    //   departmentCode: "ENG001",
+    //   isBranch: true,
+    //   createdAt: "2024-01-10T09:00:00Z"
+    // },
     {
       id: "3",
       name: "Sales",
