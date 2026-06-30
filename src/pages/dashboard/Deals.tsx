@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Deal, DealNote, stageLabels, sampleDeals } from "@/types/deals";
+import { Deal, DealNote, DealType, stageLabels, sampleDeals } from "@/types/deals";
 import { DealsHeader } from "@/components/deals/DealsHeader";
 import { DealsFilters } from "@/components/deals/DealsFilters";
 import { DealsKanbanView } from "@/components/deals/DealsKanbanView";
@@ -20,6 +20,7 @@ const Deals = () => {
   const [isChangeStageDialogOpen, setIsChangeStageDialogOpen] = useState(false);
   const [isAddNoteDialogOpen, setIsAddNoteDialogOpen] = useState(false);
   const [deals, setDeals] = useState<Deal[]>(sampleDeals);
+  const [dealTypeTab, setDealTypeTab] = useState<"all" | DealType>("all");
   const [timePeriod, setTimePeriod] = useState<TimePeriod>('month');
   const [customDateRange, setCustomDateRange] = useState<DateRange | undefined>();
   const { toast } = useToast();
@@ -50,7 +51,9 @@ const Deals = () => {
     'closed-lost': filteredDeals.filter(deal => deal.stage === 'closed-lost')
   };
 
-  const totalAmount = filteredDeals.reduce((sum, deal) => sum + deal.loanAmount, 0);
+  const totalAmount = filteredDeals
+    .filter(deal => deal.dealType === 'loan')
+    .reduce((sum, deal) => sum + deal.loanAmount, 0);
 
   const moveDeal = (dealId: string, targetStage: Deal['stage']) => {
     setDeals(prevDeals => 
@@ -133,31 +136,35 @@ const Deals = () => {
         />
       </div>
 
-      <div className="font-medium">
-        Total Deal Value: <span className="text-primary">{totalAmount.toLocaleString()} {filteredDeals[0]?.currency || 'UGX'}</span>
-      </div>
+      {dealTypeTab !== "account" && (
+        <div className="font-medium">
+          Total Deal Value: <span className="text-primary">{totalAmount.toLocaleString()} {filteredDeals[0]?.currency || 'UGX'}</span>
+        </div>
+      )}
 
       {/* {viewMode === "kanban" ? (
-        <DealsKanbanView 
-          stageGroups={stageGroups} 
+        <DealsKanbanView
+          stageGroups={stageGroups}
           onMoveDeal={moveDeal}
           onEditDeal={handleEditDeal}
         />
       ) : (
-        <DealsTableView 
-          deals={filteredDeals} 
+        <DealsTableView
+          deals={filteredDeals}
           onMoveDeal={moveDeal}
           onEditDeal={handleEditDeal}
           onChangeStage={handleChangeStage}
           onAddNote={handleAddNote}
         />
       )} */}
-<DealsTableView 
-          deals={filteredDeals} 
+<DealsTableView
+          deals={filteredDeals}
           onMoveDeal={moveDeal}
           onEditDeal={handleEditDeal}
           onChangeStage={handleChangeStage}
           onAddNote={handleAddNote}
+          dealTypeTab={dealTypeTab}
+          onDealTypeTabChange={setDealTypeTab}
         />
       <EditDealDialog
         deal={selectedDeal}

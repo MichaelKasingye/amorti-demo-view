@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Deal, stageLabels } from "@/types/deals";
+import { Deal, DealType, stageLabels, dealTypeLabels, productOptionsByDealType } from "@/types/deals";
 
 interface EditDealDialogProps {
   deal: Deal | null;
@@ -38,12 +38,7 @@ export const EditDealDialog = ({ deal, open, onOpenChange, onSave }: EditDealDia
     { id: "dept2", name: "Mortgage and Consumer banking" },
   ];
 
-  const products = [
-    { id: "prod1", name: "Personal Secured Loan" },
-    { id: "prod1", name: "Personal Unsecured Loan" },
-    { id: "prod2", name: "Business Loan" },
-    { id: "prod4", name: "Mortgage Loan" },
-  ];
+  const products = productOptionsByDealType[formData?.dealType ?? 'loan'];
 
   const contacts = [
     { id: "contact1", name: "Alex Johnson", email: "alex.johnson@acme.com" },
@@ -72,7 +67,7 @@ export const EditDealDialog = ({ deal, open, onOpenChange, onSave }: EditDealDia
       return;
     }
 
-    if (formData.loanAmount <= 0) {
+    if (formData.dealType === 'loan' && formData.loanAmount <= 0) {
       toast({
         title: "Validation Error",
         description: "Loan amount must be greater than 0.",
@@ -92,6 +87,10 @@ export const EditDealDialog = ({ deal, open, onOpenChange, onSave }: EditDealDia
 
   const handleInputChange = (field: keyof Deal, value: any) => {
     setFormData(prev => prev ? { ...prev, [field]: value } : null);
+  };
+
+  const handleDealTypeChange = (value: DealType) => {
+    setFormData(prev => prev ? { ...prev, dealType: value, productId: "" } : null);
   };
 
   const handleContactChange = (field: keyof Deal['contact'], value: string) => {
@@ -119,6 +118,22 @@ export const EditDealDialog = ({ deal, open, onOpenChange, onSave }: EditDealDia
           {/* Basic Deal Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Deal Information</h3>
+            <div className="space-y-2">
+              <Label htmlFor="dealType">Deal Type *</Label>
+              <Select value={formData.dealType} onValueChange={(value) => handleDealTypeChange(value as DealType)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select deal type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {(Object.keys(dealTypeLabels) as DealType[]).map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {dealTypeLabels[type]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="department">Department *</Label>
@@ -214,75 +229,77 @@ export const EditDealDialog = ({ deal, open, onOpenChange, onSave }: EditDealDia
             </div>
           </div>
 
-          {/* Financial Information */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Financial Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="loanAmount">Loan Amount</Label>
-                <Input
-                  id="loanAmount"
-                  type="number"
-                  value={formData.loanAmount}
-                  onChange={(e) => handleInputChange('loanAmount', parseFloat(e.target.value) || 0)}
-                />
+          {/* Financial Information - loans only */}
+          {formData.dealType === 'loan' && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Financial Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="loanAmount">Loan Amount</Label>
+                  <Input
+                    id="loanAmount"
+                    type="number"
+                    value={formData.loanAmount}
+                    onChange={(e) => handleInputChange('loanAmount', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="loanTerm">Loan Term (years)</Label>
+                  <Input
+                    id="loanTerm"
+                    type="number"
+                    value={formData.loanTerm}
+                    onChange={(e) => handleInputChange('loanTerm', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="loanTerm">Loan Term (years)</Label>
-                <Input
-                  id="loanTerm"
-                  type="number"
-                  value={formData.loanTerm}
-                  onChange={(e) => handleInputChange('loanTerm', parseFloat(e.target.value) || 0)}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="salary">Salary</Label>
+                  <Input
+                    id="salary"
+                    type="number"
+                    value={formData.salary}
+                    onChange={(e) => handleInputChange('salary', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="pti">PTI (%)</Label>
+                  <Input
+                    id="pti"
+                    type="number"
+                    value={formData.PTI}
+                    onChange={(e) => handleInputChange('PTI', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="totalInterest">Total Interest (%)</Label>
+                  <Input
+                    id="totalInterest"
+                    type="number"
+                    value={formData.totalInterest}
+                    onChange={(e) => handleInputChange('totalInterest', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="runningLoan">Running Loan</Label>
+                  <Input
+                    id="runningLoan"
+                    type="number"
+                    value={formData.runningLoan}
+                    onChange={(e) => handleInputChange('runningLoan', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
               </div>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="salary">Salary</Label>
-                <Input
-                  id="salary"
-                  type="number"
-                  value={formData.salary}
-                  onChange={(e) => handleInputChange('salary', parseFloat(e.target.value) || 0)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="pti">PTI (%)</Label>
-                <Input
-                  id="pti"
-                  type="number"
-                  value={formData.PTI}
-                  onChange={(e) => handleInputChange('PTI', parseFloat(e.target.value) || 0)}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="totalInterest">Total Interest (%)</Label>
-                <Input
-                  id="totalInterest"
-                  type="number"
-                  value={formData.totalInterest}
-                  onChange={(e) => handleInputChange('totalInterest', parseFloat(e.target.value) || 0)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="runningLoan">Running Loan</Label>
-                <Input
-                  id="runningLoan"
-                  type="number"
-                  value={formData.runningLoan}
-                  onChange={(e) => handleInputChange('runningLoan', parseFloat(e.target.value) || 0)}
-                />
-              </div>
-            </div>
-          </div>
+          )}
 
           {/* Contact Information */}
           <div className="space-y-4">

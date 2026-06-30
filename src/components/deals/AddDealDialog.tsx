@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
-import { Deal, Contact } from "@/types/deals";
+import { Deal, Contact, DealType, dealTypeLabels, productOptionsByDealType } from "@/types/deals";
 
 interface AddDealDialogProps {
   isOpen: boolean;
@@ -31,6 +31,7 @@ interface AddDealDialogProps {
 
 export const AddDealDialog = ({ isOpen, onOpenChange }: AddDealDialogProps) => {
   const [newDeal, setNewDeal] = useState({
+    dealType: "loan" as DealType,
     departmentId: "",
     productId: "",
     description: "",
@@ -75,12 +76,7 @@ export const AddDealDialog = ({ isOpen, onOpenChange }: AddDealDialogProps) => {
     { id: "dept2", name: "Mortgage and Consumer banking" },
   ];
 
-  const products = [
-      { id: "prod1", name: "Personal Secured Loan" },
-    { id: "prod1", name: "Personal Unsecured Loan" },
-    { id: "prod2", name: "Business Loan" },
-    { id: "prod4", name: "Mortgage Loan" },
-  ];
+  const products = productOptionsByDealType[newDeal.dealType];
 
   const contacts = [
     { id: "contact1", name: "Alex Johnson", email: "alex.johnson@acme.com" },
@@ -108,6 +104,7 @@ export const AddDealDialog = ({ isOpen, onOpenChange }: AddDealDialogProps) => {
     });
     
     setNewDeal({
+      dealType: "loan",
       departmentId: "",
       productId: "",
       description: "",
@@ -143,12 +140,16 @@ export const AddDealDialog = ({ isOpen, onOpenChange }: AddDealDialogProps) => {
         lastContactedAt: ""
       }
     });
-    
+
     onOpenChange(false);
   };
 
   const updateDealField = (field: string, value: any) => {
     setNewDeal(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updateDealType = (value: DealType) => {
+    setNewDeal(prev => ({ ...prev, dealType: value, productId: "" }));
   };
 
   const updateContactField = (field: string, value: string) => {
@@ -185,6 +186,22 @@ export const AddDealDialog = ({ isOpen, onOpenChange }: AddDealDialogProps) => {
           {/* Basic Deal Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Deal Information</h3>
+            <div className="space-y-2">
+              <Label htmlFor="dealType">Deal Type *</Label>
+              <Select value={newDeal.dealType} onValueChange={(value) => updateDealType(value as DealType)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select deal type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {(Object.keys(dealTypeLabels) as DealType[]).map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {dealTypeLabels[type]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="department">Department *</Label>
@@ -280,75 +297,77 @@ export const AddDealDialog = ({ isOpen, onOpenChange }: AddDealDialogProps) => {
             </div>
           </div>
 
-          {/* Financial Information */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Financial Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="loanAmount">Loan Amount</Label>
-                <Input
-                  id="loanAmount"
-                  type="number"
-                  value={newDeal.loanAmount}
-                  onChange={(e) => updateDealField('loanAmount', parseFloat(e.target.value) || 0)}
-                />
+          {/* Financial Information - loans only */}
+          {newDeal.dealType === 'loan' && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Financial Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="loanAmount">Loan Amount</Label>
+                  <Input
+                    id="loanAmount"
+                    type="number"
+                    value={newDeal.loanAmount}
+                    onChange={(e) => updateDealField('loanAmount', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="loanTerm">Loan Term (years)</Label>
+                  <Input
+                    id="loanTerm"
+                    type="number"
+                    value={newDeal.loanTerm}
+                    onChange={(e) => updateDealField('loanTerm', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="loanTerm">Loan Term (years)</Label>
-                <Input
-                  id="loanTerm"
-                  type="number"
-                  value={newDeal.loanTerm}
-                  onChange={(e) => updateDealField('loanTerm', parseFloat(e.target.value) || 0)}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="salary">Salary</Label>
+                  <Input
+                    id="salary"
+                    type="number"
+                    value={newDeal.salary}
+                    onChange={(e) => updateDealField('salary', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="pti">PTI (%)</Label>
+                  <Input
+                    id="pti"
+                    type="number"
+                    value={newDeal.PTI}
+                    onChange={(e) => updateDealField('PTI', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="totalInterest">Total Interest (%)</Label>
+                  <Input
+                    id="totalInterest"
+                    type="number"
+                    value={newDeal.totalInterest}
+                    onChange={(e) => updateDealField('totalInterest', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="runningLoan">Running Loan</Label>
+                  <Input
+                    id="runningLoan"
+                    type="number"
+                    value={newDeal.runningLoan}
+                    onChange={(e) => updateDealField('runningLoan', parseFloat(e.target.value) || 0)}
+                  />
+                </div>
               </div>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="salary">Salary</Label>
-                <Input
-                  id="salary"
-                  type="number"
-                  value={newDeal.salary}
-                  onChange={(e) => updateDealField('salary', parseFloat(e.target.value) || 0)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="pti">PTI (%)</Label>
-                <Input
-                  id="pti"
-                  type="number"
-                  value={newDeal.PTI}
-                  onChange={(e) => updateDealField('PTI', parseFloat(e.target.value) || 0)}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="totalInterest">Total Interest (%)</Label>
-                <Input
-                  id="totalInterest"
-                  type="number"
-                  value={newDeal.totalInterest}
-                  onChange={(e) => updateDealField('totalInterest', parseFloat(e.target.value) || 0)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="runningLoan">Running Loan</Label>
-                <Input
-                  id="runningLoan"
-                  type="number"
-                  value={newDeal.runningLoan}
-                  onChange={(e) => updateDealField('runningLoan', parseFloat(e.target.value) || 0)}
-                />
-              </div>
-            </div>
-          </div>
+          )}
 
           {/* Contact Information */}
           <div className="space-y-4">
